@@ -1,6 +1,6 @@
 package com.example.todospringptoject.repository;
 
-import com.example.todospringptoject.entity.UserEntity;
+import com.example.todospringptoject.model.entity.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 
 //репозиторий работает токо с бд - один слой авбстракции

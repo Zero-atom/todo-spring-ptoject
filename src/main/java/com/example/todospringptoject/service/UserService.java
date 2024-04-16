@@ -1,10 +1,10 @@
 package com.example.todospringptoject.service;
 
 
-import com.example.todospringptoject.entity.UserEntity;
+import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.exception.UserAlreadyExistException;
 import com.example.todospringptoject.exception.UserNotFoundException;
-import com.example.todospringptoject.model.User;
+import com.example.todospringptoject.model.dto.User;
 import com.example.todospringptoject.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

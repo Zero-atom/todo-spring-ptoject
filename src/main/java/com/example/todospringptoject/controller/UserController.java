@@ -1,6 +1,6 @@
 package com.example.todospringptoject.controller;
 
-import com.example.todospringptoject.entity.UserEntity;
+import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.exception.UserAlreadyExistException;
 import com.example.todospringptoject.exception.UserNotFoundException;
 import com.example.todospringptoject.service.UserService;

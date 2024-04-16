@@ -1,4 +1,4 @@
-package com.example.todospringptoject.entity;
+package com.example.todospringptoject.model.entity;
 
 import jakarta.persistence.*;
 

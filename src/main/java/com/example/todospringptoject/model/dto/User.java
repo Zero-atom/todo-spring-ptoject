@@ -1,6 +1,6 @@
-package com.example.todospringptoject.model;
+package com.example.todospringptoject.model.dto;
 
-import com.example.todospringptoject.entity.UserEntity;
+import com.example.todospringptoject.model.entity.UserEntity;
 
 //entity сущности связанные с БД
 //model для обмена между сервером и клиентом
