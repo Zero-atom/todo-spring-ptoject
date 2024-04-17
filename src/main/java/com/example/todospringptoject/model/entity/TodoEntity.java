@@ -1,8 +1,15 @@
 package com.example.todospringptoject.model.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Table
+@Getter
+@Setter
+@NoArgsConstructor
 public class TodoEntity {
 
     @Id
@@ -16,46 +23,5 @@ public class TodoEntity {
     @JoinColumn(name = "user_id") // Необходимо указать имя столбца, по которому будет установлена связь
     private UserEntity user;
 
-    public TodoEntity() {
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Boolean getCompleted() {
-        return completed;
-    }
-
-    public void setCompleted(Boolean completed) {
-        this.completed = completed;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public UserEntity getUser() {
-        return user;
-    }
-
-    public void setUser(UserEntity user) {
-        this.user = user;
-    }
 }
