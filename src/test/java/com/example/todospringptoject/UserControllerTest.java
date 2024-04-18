@@ -1,58 +1,57 @@
 package com.example.todospringptoject;
 
+import com.example.todospringptoject.controller.UserController;
 import com.example.todospringptoject.model.dto.Todo;
 import com.example.todospringptoject.model.dto.User;
 import com.example.todospringptoject.model.entity.UserEntity;
+import com.example.todospringptoject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.MediaType;//
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;//
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;//
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-
-import com.example.todospringptoject.controller.UserController;
-import com.example.todospringptoject.service.UserService;
 
 import java.util.Arrays;
 
-import static org.hamcrest.Matchers.everyItem;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@ExtendWith(MockitoExtension.class)//нужно из за UserService в контролере
-//@AutoConfigureMockMvc
+//@ExtendWith(MockitoExtension.class)//нужно из за UserService в контролере
+@WebMvcTest(UserController.class)
 class UserControllerTest {
 
-    @Mock
+    @MockBean
     private UserService userService;//создаем мок объект
 
-    @InjectMocks
-    private UserController userController;//внедряет моки в тестируемый класс (UserController)
+//    @InjectMocks  //закоменчен т к сипользуется @WebMvcTest(UserController.class)
+//    private UserController userController;//внедряет моки в тестируемый класс (UserController)
 
-    //@Autowired
+    @Autowired
     private MockMvc mockMvc;//позволяет эмулировать http запросы к контроллеру
 
+    @Autowired
     private ObjectMapper objectMapper;//для серилизации объекта в Json
 
-    @BeforeEach//активируется перед каждым тестом (инициализиурет mockMvc)
-    void setUp() {
-        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
-        //MockMvcBuilders.standaloneSetup позволяет протестировать определенный контроллер на затаргивая другие модули
-
-        objectMapper = new ObjectMapper();
-
-    }
+//    @BeforeEach
+////активируется перед каждым тестом (инициализиурет mockMvc)
+//    void setUp() {
+//        mockMvc = MockMvcBuilders.standaloneSetup(userController).build();
+//        //MockMvcBuilders.standaloneSetup позволяет протестировать определенный контроллер на затаргивая другие модули
+//
+//        objectMapper = new ObjectMapper();
+//    } //закоменчен т к сипользуется @WebMvcTest и @Autowired к MockMvc , ObjectMapper
 
     @Test
     void getUser() throws Exception {
@@ -104,6 +103,14 @@ class UserControllerTest {
                         .content(userJson))
                 .andExpect(status().isOk());
         verify(userService, times(1)).registration(any(UserEntity.class));
+    }
+
+    @Test
+    void deleteUser() throws Exception {
+        when(userService.delete(anyLong())).thenReturn(anyLong());
+        mockMvc.perform(delete("/users/{id}", 1L))
+                .andExpect(status().isOk());
+        verify(userService, times(1)).delete(anyLong());
     }
 }
 
