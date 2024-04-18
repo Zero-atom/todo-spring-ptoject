@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 //контроллер работает с запросами и ответами  - третий слой абстракции
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired
@@ -29,6 +29,7 @@ public class UserController {
     }
 
     @GetMapping()
+    @ResponseBody
     public ResponseEntity getOneUser(@RequestParam Long id) {
         try {
             return ResponseEntity.ok(userService.getOne(id));

@@ -1,9 +1,7 @@
 package com.example.todospringptoject.model.dto;
 
 import com.example.todospringptoject.model.entity.UserEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -13,7 +11,9 @@ import java.util.stream.Collectors;
 //здесь не указываем password
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class User {
     private Long id;
     private String username;

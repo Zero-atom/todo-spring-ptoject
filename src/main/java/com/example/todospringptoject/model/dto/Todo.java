@@ -1,13 +1,13 @@
 package com.example.todospringptoject.model.dto;
 
 import com.example.todospringptoject.model.entity.TodoEntity;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Todo {
 
     private Long id;
