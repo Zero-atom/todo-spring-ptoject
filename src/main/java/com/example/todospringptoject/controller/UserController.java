@@ -1,5 +1,6 @@
 package com.example.todospringptoject.controller;
 
+import com.example.todospringptoject.exception.UsersNotFoundException;
 import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.exception.UserAlreadyExistException;
 import com.example.todospringptoject.exception.UserNotFoundException;
@@ -28,12 +29,24 @@ public class UserController { // alt + enter - создать тест
         }
     }
 
+    @GetMapping("/{userId}")
+    @ResponseBody
+    public ResponseEntity getOneUser(@PathVariable Long userId) {
+        try {
+            return ResponseEntity.ok(userService.getOne(userId));
+        } catch (UserNotFoundException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Произошла ошибка");
+        }
+    }
+
     @GetMapping()
     @ResponseBody
-    public ResponseEntity getOneUser(@RequestParam Long id) {
+    public ResponseEntity getAllUser() {
         try {
-            return ResponseEntity.ok(userService.getOne(id));
-        } catch (UserNotFoundException e) {
+            return ResponseEntity.ok(userService.getAll());
+        } catch (UsersNotFoundException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Произошла ошибка");

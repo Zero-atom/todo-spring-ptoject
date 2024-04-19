@@ -1,6 +1,7 @@
 package com.example.todospringptoject.service;
 
 
+import com.example.todospringptoject.exception.UsersNotFoundException;
 import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.exception.UserAlreadyExistException;
 import com.example.todospringptoject.exception.UserNotFoundException;
@@ -9,6 +10,8 @@ import com.example.todospringptoject.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 //сервис работает с конкретной бизнес логикой - второй слой абстракции
@@ -44,6 +47,24 @@ public class UserService {
         } else {
             throw new UserNotFoundException("Пользователь не найден");
         }
+    }
+
+    public List<User> getAll () throws UsersNotFoundException {
+        Iterable<UserEntity> userEntities = userRepo.findAll();
+        List<User> users = new ArrayList<>();
+
+        // Перебираем все элементы Iterable и конвертируем их в модели User
+        for (UserEntity userEntity : userEntities) {
+            users.add(User.toModel(userEntity));
+        }
+
+        // Если список пользователей пустой, выбрасываем исключение
+        if (users.isEmpty()) {
+            throw new UsersNotFoundException("Пользователи не найдены");
+        }
+
+        return users;
+
     }
 
     public Long delete(Long id) throws UserNotFoundException {

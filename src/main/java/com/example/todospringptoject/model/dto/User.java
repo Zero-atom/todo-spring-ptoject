@@ -1,9 +1,12 @@
 package com.example.todospringptoject.model.dto;
 
+import com.example.todospringptoject.exception.UsersNotFoundException;
 import com.example.todospringptoject.model.entity.UserEntity;
 import lombok.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 //entity сущности связанные с БД
@@ -25,6 +28,12 @@ public class User {
         model.setUsername(entity.getUsername());
         model.setTodos(entity.getTodos().stream().map(Todo::toModel).collect(Collectors.toList()));
         return model;
+    }
+
+    public static List<User> toModel(List<UserEntity> entities) {
+        return entities.stream()
+                .map(User::toModel)
+                .collect(Collectors.toList());
     }
 
 }
