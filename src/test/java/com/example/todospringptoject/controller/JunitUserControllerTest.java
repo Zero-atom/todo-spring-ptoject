@@ -1,24 +1,17 @@
-package com.example.todospringptoject;
+package com.example.todospringptoject.controller;
 
-import com.example.todospringptoject.controller.UserController;
 import com.example.todospringptoject.model.dto.Todo;
 import com.example.todospringptoject.model.dto.User;
 import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.Arrays;
 
@@ -30,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 //@ExtendWith(MockitoExtension.class)//нужно из за UserService в контролере
 @WebMvcTest(UserController.class)
-class UserControllerTest {
+class JunitUserControllerTest {
 
     @MockBean
     private UserService userService;//создаем мок объект
@@ -44,6 +37,7 @@ class UserControllerTest {
     @Autowired
     private ObjectMapper objectMapper;//для серилизации объекта в Json
 
+    //закоменчен т к сипользуется @WebMvcTest и @Autowired к MockMvc , ObjectMapper
 //    @BeforeEach
 ////активируется перед каждым тестом (инициализиурет mockMvc)
 //    void setUp() {
@@ -51,7 +45,7 @@ class UserControllerTest {
 //        //MockMvcBuilders.standaloneSetup позволяет протестировать определенный контроллер на затаргивая другие модули
 //
 //        objectMapper = new ObjectMapper();
-//    } //закоменчен т к сипользуется @WebMvcTest и @Autowired к MockMvc , ObjectMapper
+//    }
 
     @Test
     void getUser() throws Exception {

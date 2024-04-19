@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 //контроллер работает с запросами и ответами  - третий слой абстракции
 @RestController
 @RequestMapping("/users")
-public class UserController {
+public class UserController { // alt + enter - создать тест
 
     @Autowired
     private UserService userService;//внедрение репо
