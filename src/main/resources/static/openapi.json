@@ -1,0 +1,186 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Sandbox REST API",
+    "description": "Sandbox REST API Docs",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Локальный сервер разработки"
+    }
+  ],
+  "paths": {
+    "/users": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Успешный результат получения пользователей",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UserResponse"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UserRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Пользователь успешно сохранен"
+          },
+          "400": {
+            "description": "Произошла ошибка"
+          }
+        }
+      }
+    },
+    "/users/{userId}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "description": "Идентификатор пользователя"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Успешный результат получения информации о пользователе",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Произошла ошибка"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "delete": {
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "number"
+            },
+            "description": "Идентификатор пользователя"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Пользователь успешно удален"
+          },
+          "400": {
+            "description": "Произошла ошибка"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserRequest": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "title": "Имя пользователя",
+            "nullable": false,
+            "example": "user123"
+          },
+          "password": {
+            "type": "string",
+            "title": "Пароль пользователя",
+            "nullable": false,
+            "example": "Pass123"
+          }
+        },
+        "required": ["username", "password"]
+      },
+      "UserResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "title": "Идентификатор пользователя",
+            "nullable": false,
+            "example": 1
+          },
+          "username": {
+            "type": "string",
+            "title": "Имя пользователя",
+            "nullable": false,
+            "example": "user123"
+          },
+          "todos": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TodoResponse"
+            },
+            "title": "Список задания",
+            "nullable": true
+          }
+        },
+        "required": ["id", "username"]
+      },
+      "TodoResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "title": "Идентификатор задания",
+            "nullable": false,
+            "example": 1
+          },
+          "title": {
+            "type": "string",
+            "title": "Название задачи",
+            "nullable": false,
+            "example": "Задание 1"
+          },
+          "completed": {
+            "type": "boolean",
+            "title": "Статус выполнения",
+            "nullable": false,
+            "example": true
+          },
+          "description": {
+            "type": "string",
+            "title": "Описание задачи",
+            "nullable": true,
+            "example": "Важная задача 1"
+          }
+        },
+        "required": ["id", "title", "completed"]
+      }
+    }
+  }
+}
