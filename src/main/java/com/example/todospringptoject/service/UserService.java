@@ -2,6 +2,7 @@ package com.example.todospringptoject.service;
 
 
 import com.example.todospringptoject.exception.UsersNotFoundException;
+import com.example.todospringptoject.mapper.UserMapper;
 import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.exception.UserAlreadyExistException;
 import com.example.todospringptoject.exception.UserNotFoundException;
@@ -20,6 +21,9 @@ public class UserService {
 
     @Autowired
     private UserRepo userRepo;//внедрение репо
+
+    @Autowired
+    private UserMapper userMapper; // Внедряем маппер
 
     public UserEntity registration(UserEntity user) throws UserAlreadyExistException {//registerUser - убратть
 
@@ -43,7 +47,7 @@ public class UserService {
         Optional<UserEntity> optionalUser = userRepo.findById(id);
         if (optionalUser.isPresent()) {
             UserEntity user = optionalUser.get();
-            return User.toModel(user);
+            return userMapper.userEntityToUser(user);
         } else {
             throw new UserNotFoundException("Пользователь не найден");
         }
@@ -55,7 +59,7 @@ public class UserService {
 
         // Перебираем все элементы Iterable и конвертируем их в модели User
         for (UserEntity userEntity : userEntities) {
-            users.add(User.toModel(userEntity));
+            users.add(userMapper.userEntityToUser(userEntity)); // Преобразование сущности в DTO
         }
 
         // Если список пользователей пустой, выбрасываем исключение

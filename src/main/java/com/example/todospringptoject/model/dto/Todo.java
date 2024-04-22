@@ -15,13 +15,4 @@ public class Todo {
     private Boolean completed;
     private String description;
 
-    public static Todo toModel(TodoEntity entity) {//конвертор сущности в модель
-        Todo model = new Todo();
-        model.setId(entity.getId());
-        model.setTitle(entity.getTitle());
-        model.setCompleted(entity.getCompleted());
-        model.setDescription(entity.getDescription());
-        return model;
-    }
-
 }

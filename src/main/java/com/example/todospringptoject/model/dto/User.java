@@ -22,18 +22,4 @@ public class User {
     private String username;
     private List<Todo> todos;
 
-    public static User toModel(UserEntity entity) {//конвертор сущности в модель
-        User model = new User();
-        model.setId(entity.getId());
-        model.setUsername(entity.getUsername());
-        model.setTodos(entity.getTodos().stream().map(Todo::toModel).collect(Collectors.toList()));
-        return model;
-    }
-
-    public static List<User> toModel(List<UserEntity> entities) {
-        return entities.stream()
-                .map(User::toModel)
-                .collect(Collectors.toList());
-    }
-
 }
