@@ -1,7 +1,5 @@
 package com.example.todospringptoject.container;
 
-import com.example.todospringptoject.model.dto.Todo;
-import com.example.todospringptoject.model.dto.User;
 import com.example.todospringptoject.model.entity.TodoEntity;
 import com.example.todospringptoject.model.entity.UserEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,13 +17,9 @@ import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import com.example.todospringptoject.service.UserService;
 
-import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

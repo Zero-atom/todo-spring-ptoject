@@ -1,0 +1,73 @@
+databaseChangeLog:
+  - changeSet:
+      id: insert-todo-data
+      author: Denis
+      changes:
+        - insert:
+            tableName: todo
+            columns:
+              - column:
+                  name: title
+                  value: "Complete project"
+              - column:
+                  name: completed
+                  value: 1
+              - column:
+                  name: description
+                  value: "Finish the project by next week"
+              - column:
+                  name: user_id
+                  value: 1
+        - insert:
+            tableName: todo
+            columns:
+              - column:
+                  name: title
+                  value: "Call client"
+              - column:
+                  name: completed
+                  value: 0
+              - column:
+                  name: description
+                  value: "Follow up on project requirements"
+              - column:
+                  name: user_id
+                  value: 2
+        - insert:
+            tableName: todo
+            columns:
+              - column:
+                  name: title
+                  value: "Buy groceries"
+              - column:
+                  name: completed
+                  value: 0
+              - column:
+                  name: description
+                  value: "Milk, eggs, bread"
+              - column:
+                  name: user_id
+                  value: 1
+
+  - changeSet:
+      id: insert-user-data
+      author: Denis
+      changes:
+        - insert:
+            tableName: user
+            columns:
+              - column:
+                  name: username
+                  value: "john_doe"
+              - column:
+                  name: password
+                  value: "password123"
+        - insert:
+            tableName: user
+            columns:
+              - column:
+                  name: username
+                  value: "jane_smith"
+              - column:
+                  name: password
+                  value: "securepassword"

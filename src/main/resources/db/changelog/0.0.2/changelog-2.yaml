@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: add-indexes-to-user-and-todo
+      author: Denis
+      context: sampledata
+      changes:
+        - createIndex:
+            indexName: idx_username
+            tableName: user
+            columns:
+              - column:
+                  name: username
+
+  - changeSet:
+      id: add-index-to-todo-user-id
+      author: Denis
+      changes:
+        - createIndex:
+            indexName: idx_user_id
+            tableName: todo
+            columns:
+              - column:
+                  name: user_id

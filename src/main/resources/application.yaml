@@ -2,11 +2,10 @@
 spring:
   liquibase:
     enabled: true
+    # Добавляем тестовые данные
+    sampledata: false
   application:
     name: todospringptoject
-  jpa:
-    hibernate:
-      ddl-auto: update
   datasource:
     url: jdbc:mysql://localhost:3306/todo_spring?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
