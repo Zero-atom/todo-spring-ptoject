@@ -1,0 +1,19 @@
+{
+  "id": 1,
+  "username": "john_doe",
+  "password": "password123",
+  "todos": [
+    {
+      "id": 1,
+      "title": "Complete assignment",
+      "description": "Finish the project by Friday",
+      "completed": false
+    },
+    {
+      "id": 2,
+      "title": "Buy groceries",
+      "description": "Milk, eggs, bread",
+      "completed": true
+    }
+  ]
+}
