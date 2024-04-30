@@ -8,6 +8,7 @@ import com.example.todospringptoject.repository.TodoRepo;
 import com.example.todospringptoject.repository.UserRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -66,7 +67,6 @@ class UserControllerTest {
         }
     }
 
-
     @Test
     void registration_whenValidUserProvided_thenUserSuccessfullyRegistered() throws Exception {
         RestAssured.port = 8080; // Установка порта
@@ -97,6 +97,9 @@ class UserControllerTest {
         // Сравнение каждого поля отдельно
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getUsername(), actual.getUsername());
+
+        //чистка бд
+        userRepo.deleteAll();
     }
 
     @Test
@@ -137,5 +140,9 @@ class UserControllerTest {
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getUsername(), actual.getUsername());
         assertEquals(expected.getTodos().size(), actual.getTodos().size());
+
+        //чистка бд
+        userRepo.deleteAll();
+        todoRepo.deleteAll();
     }
 }

@@ -1,13 +1,14 @@
 package com.example.todospringptoject.controller;
 
 import com.example.todospringptoject.exception.UsersNotFoundException;
+import com.example.todospringptoject.model.dto.User;
 import com.example.todospringptoject.model.entity.UserEntity;
-import com.example.todospringptoject.exception.UserAlreadyExistException;
-import com.example.todospringptoject.exception.UserNotFoundException;
 import com.example.todospringptoject.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 //контроллер работает с запросами и ответами  - третий слой абстракции
 @RestController
@@ -18,48 +19,26 @@ public class UserController { // alt + enter - создать тест
     private UserService userService;//внедрение репо
 
     @PostMapping
-    public ResponseEntity registration(@RequestBody UserEntity user) {
-        try {
-            //userService.registration(user);
-            return ResponseEntity.ok(userService.registration(user));
-        } catch (UserAlreadyExistException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }  catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
+    @ResponseBody
+    public User registration(@RequestBody UserEntity user) {
+        return userService.registration(user);
     }
 
     @GetMapping("/{userId}")
     @ResponseBody
-    public ResponseEntity getOneUser(@PathVariable Long userId) {
-        try {
-            return ResponseEntity.ok(userService.getOne(userId));
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
+    public User getOneUser(@PathVariable Long userId) {
+        return userService.getOne(userId);
     }
 
     @GetMapping()
     @ResponseBody
-    public ResponseEntity getAllUser() {
-        try {
-            return ResponseEntity.ok(userService.getAll());
-        } catch (UsersNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
+    public List<User> getAllUser() {
+        return userService.getAll();
     }
 
-    //пример получениме параметра из строки запроса
     @DeleteMapping("/{id}")
-    public ResponseEntity deleteOneUser(@PathVariable Long id) {
-        try {
-            return ResponseEntity.ok(userService.delete(id));
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
+    @ResponseBody
+    public User deleteOneUser(@PathVariable Long id) {
+        return userService.delete(id);
     }
 }

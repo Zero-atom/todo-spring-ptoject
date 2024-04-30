@@ -25,20 +25,22 @@ public class UserService {
     @Autowired
     private UserMapper userMapper; // Внедряем маппер
 
-    public User registration(UserEntity user) throws UserAlreadyExistException {//registerUser - убратть
+    public User registration(UserEntity user){
 
         //userService.registration(user);
         //userRepo.find ... - > findAl, findById, findAllById,,, важно название для методов созданных по дефолту
 
-        if (userRepo.findByUsername(user.getUsername()) != null) {
-            throw  new UserAlreadyExistException("Пользователь с таким именем существует");//Лучше не писать что "пользователь такой уже есть"
-            //пользователь должен получать как можно меньше информации о структуре проекта
+        System.out.println(userRepo.findByUsername(user.getUsername()));
+        if (userRepo.findByUsername(user.getUsername()) == null) {
+
+            userRepo.save(user);
+            return userMapper.userEntityToUser(user);
+        } else {
+            throw  new UserAlreadyExistException();
         }
-        userRepo.save(user);
-        return userMapper.userEntityToUser(user);
     }
 
-    public User getOne (Long id) throws UserNotFoundException {
+    public User getOne (Long id)  {
 //        UserEntity user = userRepo.findById(id).get();
 //        if (user == null) {
 //            throw new UserNotFoundException("Пользователь не найден");
@@ -54,7 +56,7 @@ public class UserService {
         }
     }
 
-    public List<User> getAll () throws UsersNotFoundException {
+    public List<User> getAll () {
         Iterable<UserEntity> userEntities = userRepo.findAll();
         List<User> users = new ArrayList<>();
 
@@ -64,16 +66,22 @@ public class UserService {
         }
 
         // Если список пользователей пустой, выбрасываем исключение
-        if (users.isEmpty()) {
+        if (!users.isEmpty()) {
+            return users;
+        } else {
             throw new UsersNotFoundException("Пользователи не найдены");
         }
 
-        return users;
-
     }
 
-    public Long delete(Long id) throws UserNotFoundException {
-        userRepo.deleteById(id);
-        return id;
+    public User delete(Long id){
+        Optional<UserEntity> optionalUser = userRepo.findById(id);
+        if (optionalUser.isPresent()) {
+            UserEntity user = optionalUser.get();
+            userRepo.deleteById(id);
+            return userMapper.userEntityToUser(user);
+        } else {
+            throw new UserNotFoundException("Пользователь не найден");
+        }
     }
 }
