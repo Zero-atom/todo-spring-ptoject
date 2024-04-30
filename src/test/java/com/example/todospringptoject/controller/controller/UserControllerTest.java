@@ -1,12 +1,13 @@
 package com.example.todospringptoject.controller.controller;
 
-import com.example.todospringptoject.model.dto.Todo;
+import com.example.todospringptoject.mapper.UserMapper;
 import com.example.todospringptoject.model.dto.User;
 import com.example.todospringptoject.model.entity.TodoEntity;
 import com.example.todospringptoject.model.entity.UserEntity;
+import com.example.todospringptoject.repository.TodoRepo;
+import com.example.todospringptoject.repository.UserRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,24 +15,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-import com.example.todospringptoject.service.UserService;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
 
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //для реальных запрос вместо MockMvc -> io.restassured
 import static io.restassured.RestAssured.given;
@@ -44,7 +36,13 @@ class UserControllerTest {
 
 
     @Autowired
-    private ObjectMapper objectMapper;
+    private UserMapper userMapper;
+
+    @Autowired
+    private UserRepo userRepo;
+
+    @Autowired
+    private TodoRepo todoRepo;
 
     @Container
     private static final MySQLContainer<?> mysql = new MySQLContainer<>(DockerImageName.parse("mysql"));
@@ -70,28 +68,15 @@ class UserControllerTest {
 
 
     @Test
-    void registration() throws Exception {
+    void registration_whenValidUserProvided_thenUserSuccessfullyRegistered() throws Exception {
         RestAssured.port = 8080; // Установка порта
 
+        //Given
         UserEntity user = readFromResource();
-//        UserEntity user = UserEntity.builder()
-//                .username("user123")
-//                .password("password123")
-//                .todos(Arrays.asList(
-//                        TodoEntity.builder()
-//                                .title("Task 1")
-//                                .completed(false)
-//                                .description("Description for Task 1")
-//                                .build(),
-//                        TodoEntity.builder()
-//                                .title("Task 2")
-//                                .completed(true)
-//                                .description("Description for Task 2")
-//                                .build()
-//                ))
-//                .build();
+        //userRepo.save(user);
 
-        given()
+        //When
+        User actual = given()
                 .port(RestAssured.port)
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .accept(MediaType.APPLICATION_JSON_VALUE)
@@ -100,6 +85,57 @@ class UserControllerTest {
                 .post("/users")
                 .then()
                 .assertThat()
-                .statusCode(200);
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(User.class);
+
+        //Then
+        User expected = userMapper.userEntityToUser(user); // Получение ожидаемого пользователя
+        //assertEquals(expected, actual); // Сравнение ожидаемого и фактического пользователей
+
+        // Сравнение каждого поля отдельно
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getUsername(), actual.getUsername());
+    }
+
+    @Test
+    void getOneUser_whenExistingUserIdProvided_thenRetrieveUserSuccessfully() throws IOException {
+        RestAssured.port = 8080; // Установка порта
+
+        //Given
+        UserEntity user = readFromResource();
+        // Сохраняем пользователя перед тем, как получить его
+        Long userId = userRepo.save(user).getId();
+
+        // Привязываем задания к пользователю
+        for (TodoEntity todo : user.getTodos()) {
+            todo.setUser(user);
+        }
+        // Сохраняем задания (todos)
+        todoRepo.saveAll(user.getTodos());
+
+        //When
+        User actual = given()
+                .port(RestAssured.port)
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .accept(MediaType.APPLICATION_JSON_VALUE)
+                .when()
+                .get("/users/{userId}", userId) // Используем userId для получения пользователя
+                .then()
+                .assertThat()
+                .statusCode(200)
+                .extract()
+                .body()
+                .as(User.class);
+
+        //Then
+        User expected = userMapper.userEntityToUser(user); // Получаем ожидаемого пользователя
+        //assertEquals(expected, actual); // Сравниваем ожидаемого и фактического пользователя (по ссылке)
+
+        // Сравнение каждого поля отдельно
+        assertEquals(expected.getId(), actual.getId());
+        assertEquals(expected.getUsername(), actual.getUsername());
+        assertEquals(expected.getTodos().size(), actual.getTodos().size());
     }
 }

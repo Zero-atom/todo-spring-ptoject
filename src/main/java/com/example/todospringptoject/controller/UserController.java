@@ -20,8 +20,8 @@ public class UserController { // alt + enter - создать тест
     @PostMapping
     public ResponseEntity registration(@RequestBody UserEntity user) {
         try {
-            userService.registration(user);
-            return ResponseEntity.ok("Пользователь успешно сохранен");
+            //userService.registration(user);
+            return ResponseEntity.ok(userService.registration(user));
         } catch (UserAlreadyExistException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }  catch (Exception e) {

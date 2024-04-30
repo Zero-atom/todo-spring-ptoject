@@ -25,7 +25,7 @@ public class UserService {
     @Autowired
     private UserMapper userMapper; // Внедряем маппер
 
-    public UserEntity registration(UserEntity user) throws UserAlreadyExistException {//registerUser - убратть
+    public User registration(UserEntity user) throws UserAlreadyExistException {//registerUser - убратть
 
         //userService.registration(user);
         //userRepo.find ... - > findAl, findById, findAllById,,, важно название для методов созданных по дефолту
@@ -34,7 +34,8 @@ public class UserService {
             throw  new UserAlreadyExistException("Пользователь с таким именем существует");//Лучше не писать что "пользователь такой уже есть"
             //пользователь должен получать как можно меньше информации о структуре проекта
         }
-        return userRepo.save(user);
+        userRepo.save(user);
+        return userMapper.userEntityToUser(user);
     }
 
     public User getOne (Long id) throws UserNotFoundException {
