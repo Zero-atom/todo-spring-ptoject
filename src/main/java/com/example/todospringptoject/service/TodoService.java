@@ -8,13 +8,16 @@ import com.example.todospringptoject.model.entity.TodoEntity;
 import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.repository.TodoRepo;
 import com.example.todospringptoject.repository.UserRepo;
+import com.example.todospringptoject.specification.TodoSpecification;
 import lombok.AllArgsConstructor;
 
+import org.springframework.data.jpa.domain.Specification;//убрать
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
 
@@ -26,6 +29,8 @@ public class TodoService {
     private TodoRepo todoRepo;
     private UserRepo userRepo;
     private TodoMapper todoMapper;
+
+    private final TodoSpecification todoSpecification;
 
     public Todo createTodo(TodoEntity todo, Long userId)  {
         log.info("Метод createTodo вызван с параметрами: todo={}, userId={}", todo, userId);
@@ -58,5 +63,27 @@ public class TodoService {
             throw new TodoNotFoundException("Задача не найдена");
         }
     }
+
+    public Page<Todo> getAllTodos(Pageable pageable) {
+        log.info("Метод getAllTodos вызван");
+
+        Page<TodoEntity> todoEntities = todoRepo.findAll(pageable);
+        Page<Todo> todos = todoEntities.map(todoMapper::todoEntityToTodo); // Преобразование сущностей в DTO
+
+        if (!todos.isEmpty()) {
+            log.info("Успешно найдено {} задач", todos.getTotalElements());
+            return todos;
+        } else {
+            throw new TodoNotFoundException("Задачи не найдены");
+        }
+    }
+
+//    public Page<Todo> getAllTodos(Pageable pageable, boolean completed) {
+//        log.info("Метод getAllTodos вызван");
+//
+//        // Создаем спецификацию для фильтрации по статусу завершенности
+//        Specification<TodoEntity> spec = todoSpecification.byCompleted(completed);
+//
+//    }
 
 }
