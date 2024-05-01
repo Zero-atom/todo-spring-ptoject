@@ -41,7 +41,11 @@ dependencies {
 	implementation("org.mapstruct:mapstruct:1.5.5.Final")
 	annotationProcessor("org.mapstruct:mapstruct-processor:1.5.5.Final")
 
+	//тестов с реальными запросами
 	testImplementation 'io.rest-assured:rest-assured'
+
+	//логирование
+	implementation 'org.slf4j:slf4j-api:2.0.13'
 }
 
 tasks.named('test') {

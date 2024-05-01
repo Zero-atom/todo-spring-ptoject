@@ -1,20 +1,16 @@
 package com.example.todospringptoject.controller;
 
-import com.example.todospringptoject.exception.TodoNotFoundException;
-import com.example.todospringptoject.exception.UserAlreadyExistException;
-import com.example.todospringptoject.exception.UserNotFoundException;
 import com.example.todospringptoject.model.dto.Todo;
 import com.example.todospringptoject.model.entity.TodoEntity;
 import com.example.todospringptoject.service.TodoService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/todos")
+@AllArgsConstructor
 public class TodoController {
 
-    @Autowired
     private TodoService todoService;
 
     @PostMapping

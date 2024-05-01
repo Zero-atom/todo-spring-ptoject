@@ -1,11 +1,9 @@
 package com.example.todospringptoject.controller;
 
-import com.example.todospringptoject.exception.UsersNotFoundException;
 import com.example.todospringptoject.model.dto.User;
 import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -13,20 +11,21 @@ import java.util.List;
 //контроллер работает с запросами и ответами  - третий слой абстракции
 @RestController
 @RequestMapping("/users")
+@AllArgsConstructor
 public class UserController { // alt + enter - создать тест
 
-    @Autowired
     private UserService userService;//внедрение репо
 
     @PostMapping
     @ResponseBody
     public User registration(@RequestBody UserEntity user) {
-        return userService.registration(user);
+        return userService.create(user);
     }
 
     @GetMapping("/{userId}")
     @ResponseBody
     public User getOneUser(@PathVariable Long userId) {
+        userService.saveRandomUsers();
         return userService.getOne(userId);
     }
 
