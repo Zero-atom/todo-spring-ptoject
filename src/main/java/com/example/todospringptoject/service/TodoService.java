@@ -26,7 +26,7 @@ public class TodoService {
     @Autowired
     private TodoMapper todoMapper;
 
-    public Todo createTodo(TodoEntity todo, Long userId) throws UserNotFoundException {
+    public Todo createTodo(TodoEntity todo, Long userId)  {
         Optional<UserEntity> optionalUser = userRepo.findById(userId);
         if (optionalUser.isPresent()) {
             todo.setUser(optionalUser.get());
@@ -36,7 +36,7 @@ public class TodoService {
         }
     }
 
-    public Todo completeTodo( Long todoId) throws TodoNotFoundException {
+    public Todo completeTodo( Long todoId)  {
         Optional<TodoEntity> optionalTodo = todoRepo.findById(todoId);
         if (optionalTodo.isPresent()) {
             TodoEntity todo = optionalTodo.get();

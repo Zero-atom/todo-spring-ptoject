@@ -21,5 +21,6 @@ public class User {
     private Long id;
     private String username;
     private List<Todo> todos;
+    //private String role; проверка  unmappedTargetPolicy = ReportingPolicy.ERROR -> 1 error
 
 }

@@ -1,5 +1,6 @@
-package com.example.todospringptoject.exception;
+package com.example.todospringptoject.exception.handler;
 
+import com.example.todospringptoject.exception.UserAlreadyExistException;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.HttpStatus;

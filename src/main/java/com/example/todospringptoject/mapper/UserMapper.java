@@ -4,10 +4,12 @@ import com.example.todospringptoject.model.dto.User;
 import com.example.todospringptoject.model.entity.UserEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.ERROR)
 public interface UserMapper {
 
     @Mapping(target = "id", source = "entity.id")
@@ -16,4 +18,6 @@ public interface UserMapper {
     User userEntityToUser(UserEntity entity);
 
     List<User> userEntityListToUserList(List<UserEntity> entities);
+
+
 }

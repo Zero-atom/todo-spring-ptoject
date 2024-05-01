@@ -3,6 +3,7 @@ package com.example.todospringptoject.controller;
 import com.example.todospringptoject.exception.TodoNotFoundException;
 import com.example.todospringptoject.exception.UserAlreadyExistException;
 import com.example.todospringptoject.exception.UserNotFoundException;
+import com.example.todospringptoject.model.dto.Todo;
 import com.example.todospringptoject.model.entity.TodoEntity;
 import com.example.todospringptoject.service.TodoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,25 +18,12 @@ public class TodoController {
     private TodoService todoService;
 
     @PostMapping
-    public ResponseEntity createTodo(@RequestBody TodoEntity todo,
-                             @RequestParam Long userId) {
-        try {
-            return ResponseEntity.ok(todoService.createTodo(todo,userId));
-        } catch (UserNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
+    public Todo createTodo(@RequestBody TodoEntity todo, @RequestParam Long userId) {
+        return todoService.createTodo(todo,userId);
     }
 
     @PutMapping
-    public ResponseEntity completedTodo(@RequestParam Long todoId) {
-        try {
-            return ResponseEntity.ok(todoService.completeTodo(todoId));
-        } catch (TodoNotFoundException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Произошла ошибка");
-        }
+    public Todo completedTodo(@RequestParam Long todoId) {
+        return todoService.completeTodo(todoId);
     }
 }

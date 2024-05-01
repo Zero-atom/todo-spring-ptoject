@@ -30,13 +30,11 @@ public class UserService {
         //userService.registration(user);
         //userRepo.find ... - > findAl, findById, findAllById,,, важно название для методов созданных по дефолту
 
-        System.out.println(userRepo.findByUsername(user.getUsername()));
         if (userRepo.findByUsername(user.getUsername()) == null) {
-
             userRepo.save(user);
             return userMapper.userEntityToUser(user);
         } else {
-            throw  new UserAlreadyExistException();
+            throw  new UserAlreadyExistException("Пользователь уже существует");
         }
     }
 
