@@ -2,7 +2,6 @@ databaseChangeLog:
   - changeSet:
       id: add-indexes-to-user-and-todo
       author: Denis
-      context: sampledata
       changes:
         - createIndex:
             indexName: idx_username

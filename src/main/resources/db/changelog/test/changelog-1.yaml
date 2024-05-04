@@ -2,6 +2,7 @@ databaseChangeLog:
   - changeSet:
       id: insert-todo-data
       author: Denis
+      context: sampleData
       changes:
         - insert:
             tableName: todo
@@ -52,6 +53,7 @@ databaseChangeLog:
   - changeSet:
       id: insert-user-data
       author: Denis
+      context: sampleData
       changes:
         - insert:
             tableName: user

@@ -1,7 +1,14 @@
 databaseChangeLog:
   - include:
-        file: db/changelog/changeset/create-user-table.yaml
-  - include:
-        file: db/changelog/changeset/create-todo-table.yaml
+      file: db/changelog/0.0.1/changelog-0.0.1-master.yaml
   - include:
       file: db/changelog/0.0.2/changelog-0.0.2-master.yaml
+  - include:
+      file: db/changelog/test/changelog-test-master.yaml
+
+#        - include:
+#            file: db/changelog/changeset/create-user-table.yaml
+#        - include:
+#            file: db/changelog/changeset/create-todo-table.yaml
+#        - include:
+#            file: db/changelog/0.0.2/changelog-0.0.2-master.yaml

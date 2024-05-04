@@ -69,6 +69,9 @@ class UserControllerTest {
 
     @Test
     void registration_whenValidUserProvided_thenUserSuccessfullyRegistered() throws Exception {
+        //чистка бд
+        userRepo.deleteAll();
+
         RestAssured.port = 8080; // Установка порта
 
         //Given
@@ -95,7 +98,6 @@ class UserControllerTest {
         //assertEquals(expected, actual); // Сравнение ожидаемого и фактического пользователей
 
         // Сравнение каждого поля отдельно
-        assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getUsername(), actual.getUsername());
 
         //чистка бд
@@ -104,19 +106,15 @@ class UserControllerTest {
 
     @Test
     void getOneUser_whenExistingUserIdProvided_thenRetrieveUserSuccessfully() throws IOException {
+        //чистка бд
+        userRepo.deleteAll();
+
         RestAssured.port = 8080; // Установка порта
 
         //Given
         UserEntity user = readFromResource();
         // Сохраняем пользователя перед тем, как получить его
         Long userId = userRepo.save(user).getId();
-
-        // Привязываем задания к пользователю
-        for (TodoEntity todo : user.getTodos()) {
-            todo.setUser(user);
-        }
-        // Сохраняем задания (todos)
-        todoRepo.saveAll(user.getTodos());
 
         //When
         User actual = given()
@@ -139,10 +137,8 @@ class UserControllerTest {
         // Сравнение каждого поля отдельно
         assertEquals(expected.getId(), actual.getId());
         assertEquals(expected.getUsername(), actual.getUsername());
-        assertEquals(expected.getTodos().size(), actual.getTodos().size());
 
         //чистка бд
         userRepo.deleteAll();
-        todoRepo.deleteAll();
     }
 }

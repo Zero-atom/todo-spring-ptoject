@@ -3,8 +3,8 @@ spring:
 
   liquibase:
     enabled: true
-    # Добавляем тестовые данные
-    sampledata: false
+    # Добавляем тестовые данные , sampleData
+    contexts: develop , sampleData
   application:
     name: todospringptoject
   datasource:
