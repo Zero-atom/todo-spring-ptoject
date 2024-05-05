@@ -83,7 +83,7 @@ public class TodoService {
 
     //пагинация и спецификация
     public Page<Todo> getAllTodosWithPaginationAndFilter(Pageable pageable, boolean completed) {
-        log.info("Метод getAllTodos вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}, Фильтр: {}",
+        log.info("Метод getAllTodosWithPaginationAndFilter вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}, Фильтр: {}",
                 pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort(), completed);
 
         Specification<TodoEntity> spec = todoSpecification.byCompleted(completed);
@@ -110,6 +110,24 @@ public class TodoService {
         if (!todosProjection.isEmpty()) {
             log.info("Успешно найдено {} задач", todosProjection.getTotalElements());
             return todosProjection;
+        } else {
+            throw new TodoNotFoundException("Задачи не найдены");
+        }
+    }
+
+    //native запрос и jpql запрос
+    public Page<Todo> findCompletedTodosNative(Pageable pageable) {
+        log.info("Метод findCompletedTodosNative вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}",
+                pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort());
+
+        //Page<TodoEntity> todoEntities = todoRepo.findCompletedTodosNative(pageable); //native
+        Page<TodoEntity> todoEntities = todoRepo.findCompletedTodosJPQL(pageable); //jpql
+
+        Page<Todo> todos = todoEntities.map(todoMapper::todoEntityToTodo);
+
+        if (!todos.isEmpty()) {
+            log.info("Успешно найдено {} задач", todos.getTotalElements());
+            return todos;
         } else {
             throw new TodoNotFoundException("Задачи не найдены");
         }

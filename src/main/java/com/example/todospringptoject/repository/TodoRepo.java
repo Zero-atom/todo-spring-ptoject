@@ -5,7 +5,10 @@ import com.example.todospringptoject.model.entity.TodoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+
+import java.util.List;
 
 public interface TodoRepo extends CrudRepository<TodoEntity, Long>, JpaSpecificationExecutor<TodoEntity> {
 
@@ -14,4 +17,12 @@ public interface TodoRepo extends CrudRepository<TodoEntity, Long>, JpaSpecifica
 
     //projections
     Page<TodoProjection> findAllProjectedBy(Pageable pageable);
+
+    //native запрос
+    @Query(value = "SELECT * FROM todo WHERE completed = true", nativeQuery = true)
+    Page<TodoEntity> findCompletedTodosNative(Pageable pageable);
+
+    //jpql запрос
+    @Query("SELECT t FROM TodoEntity t WHERE t.completed = true")
+    Page<TodoEntity> findCompletedTodosJPQL(Pageable pageable);
 }

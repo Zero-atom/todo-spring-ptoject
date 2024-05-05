@@ -31,11 +31,11 @@ public class TodoController {
     }
 
     //реализация пагинации 1 с Pageable pageable
-    @GetMapping
-    public Page<Todo> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable)
-    {
-        return todoService.getAllTodos(pageable); // запрос с пагинацией
-    }
+//    @GetMapping
+//    public Page<Todo> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable)
+//    {
+//        return todoService.getAllTodos(pageable); // запрос с пагинацией
+//    }
 
     //реализация токо пагинации 2 с int page, int size
 //    @GetMapping
@@ -57,12 +57,18 @@ public class TodoController {
 //        //return todoService.getAllTodosProjection(pageable, completed); // запрос с пагинацией, спецификацией, projections
 //    }
 
-    // запрос с пагинацией, спецификацией, projections
-    @GetMapping("/search")
-    public Page<TodoProjection> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
-                                  @RequestParam(required = false) Boolean completed
-    ) {
-        return todoService.getAllTodosProjection(pageable, completed); // запрос с пагинацией, спецификацией, projections
+//    // запрос с пагинацией, спецификацией, projections
+//    @GetMapping("/search")
+//    public Page<TodoProjection> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
+//                                  @RequestParam(required = false) Boolean completed
+//    ) {
+//        return todoService.getAllTodosProjection(pageable, completed); // запрос с пагинацией, спецификацией, projections
+//    }
+
+    //native запрос
+    @GetMapping()
+    public Page<Todo> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+        return todoService.findCompletedTodosNative(pageable);
     }
 
 }
