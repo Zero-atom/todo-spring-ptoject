@@ -64,8 +64,10 @@ public class TodoService {
         }
     }
 
+    //пагинация
     public Page<Todo> getAllTodos(Pageable pageable) {
-        log.info("Метод getAllTodos вызван");
+        log.info("Метод getAllTodos вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}",
+                pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort());
 
         Page<TodoEntity> todoEntities = todoRepo.findAll(pageable);
         Page<Todo> todos = todoEntities.map(todoMapper::todoEntityToTodo); // Преобразование сущностей в DTO
