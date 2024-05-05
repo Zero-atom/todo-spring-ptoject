@@ -8,8 +8,10 @@ import com.example.todospringptoject.exception.UserAlreadyExistException;
 import com.example.todospringptoject.exception.UserNotFoundException;
 import com.example.todospringptoject.model.dto.User;
 import com.example.todospringptoject.repository.UserRepo;
+import com.example.todospringptoject.specification.UserSpecification;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,7 +34,6 @@ public class UserService {
     private UserMapper userMapper; // Внедряем маппер
 
     public User create(UserEntity user){
-        log.info("Метод create вызван c параметром UserEntity user");
 
         if (userRepo.findByUsername(user.getUsername()) == null) {
             userRepo.save(user);
@@ -56,10 +57,9 @@ public class UserService {
     }
 
     public List<User> getAll () {
-        log.info("Метод getAll вызван");
         Iterable<UserEntity> userEntities = userRepo.findAll();
-        List<User> users = new ArrayList<>();
 
+        List<User> users = new ArrayList<>();
         // Перебираем все элементы Iterable и конвертируем их в модели User
         for (UserEntity userEntity : userEntities) {
             users.add(userMapper.userEntityToUser(userEntity)); // Преобразование сущности в DTO
@@ -73,6 +73,28 @@ public class UserService {
             throw new UsersNotFoundException("Пользователи не найдены");
         }
 
+    }
+
+    //спецификация
+    public List<User> getAll (String usernamePrefix, String titlePrefix) {
+        // Создаем спецификацию для фильтрации пользователей
+        Specification<UserEntity> spec = UserSpecification.usersWithTodosStartingWith(usernamePrefix, titlePrefix);
+
+        // Получаем список пользователей, удовлетворяющих спецификации
+        List<UserEntity> userEntities = userRepo.findAll(spec);
+
+        List<User> users = new ArrayList<>();
+        for (UserEntity userEntity : userEntities) {
+            users.add(userMapper.userEntityToUser(userEntity)); // Преобразование сущности в DTO
+        }
+
+        // Если список пользователей пустой, выбрасываем исключение
+        if (!users.isEmpty()) {
+            log.info("Успешно найдено {} пользователей", users.size());
+            return users;
+        } else {
+            throw new UsersNotFoundException("Пользователи не найдены");
+        }
     }
 
     public User delete(Long id){

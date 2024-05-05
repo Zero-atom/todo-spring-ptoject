@@ -4,6 +4,7 @@ import com.example.todospringptoject.exception.TodoNotFoundException;
 import com.example.todospringptoject.exception.UserNotFoundException;
 import com.example.todospringptoject.mapper.TodoMapper;
 import com.example.todospringptoject.model.dto.Todo;
+import com.example.todospringptoject.model.dto.TodoProjection;
 import com.example.todospringptoject.model.entity.TodoEntity;
 import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.repository.TodoRepo;
@@ -80,12 +81,37 @@ public class TodoService {
         }
     }
 
-//    public Page<Todo> getAllTodos(Pageable pageable, boolean completed) {
-//        log.info("Метод getAllTodos вызван");
-//
-//        // Создаем спецификацию для фильтрации по статусу завершенности
-//        Specification<TodoEntity> spec = todoSpecification.byCompleted(completed);
-//
-//    }
+    //пагинация и спецификация
+    public Page<Todo> getAllTodosWithPaginationAndFilter(Pageable pageable, boolean completed) {
+        log.info("Метод getAllTodos вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}, Фильтр: {}",
+                pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort(), completed);
 
+        Specification<TodoEntity> spec = todoSpecification.byCompleted(completed);
+        Page<TodoEntity> todoEntities = todoRepo.findAll(spec, pageable);
+        Page<Todo> todos = todoEntities.map(todoMapper::todoEntityToTodo);
+
+        if (!todos.isEmpty()) {
+            log.info("Успешно найдено {} задач", todos.getTotalElements());
+            return todos;
+        } else {
+            throw new TodoNotFoundException("Задачи не найдены");
+        }
+    }
+
+    //пагинация, projections, спецификацией
+    public Page<TodoProjection> getAllTodosProjection(Pageable pageable, boolean completed) {
+        log.info("Метод getAllTodosProjection вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}, Фильтр: {}",
+                pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort(), completed);
+
+        Specification<TodoEntity> spec = todoSpecification.byCompleted(completed);
+        Page<TodoEntity> todoEntities = todoRepo.findAll(spec, pageable);
+        Page<TodoProjection> todosProjection = todoEntities.map(todoMapper::todoEntityToTodoProjection);
+
+        if (!todosProjection.isEmpty()) {
+            log.info("Успешно найдено {} задач", todosProjection.getTotalElements());
+            return todosProjection;
+        } else {
+            throw new TodoNotFoundException("Задачи не найдены");
+        }
+    }
 }

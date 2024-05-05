@@ -35,6 +35,17 @@ public class UserController { // alt + enter - создать тест
         return userService.getAll();
     }
 
+    //спецификация
+    @GetMapping("/search")
+    @ResponseBody
+    public List<User> getAllUser(@RequestParam(required = false) String usernamePrefix,@RequestParam(required = false) String titlePrefix) {
+
+        if (usernamePrefix == null && titlePrefix == null) {
+            return userService.getAll();
+        }
+        return userService.getAll(usernamePrefix,titlePrefix);
+    }
+
     @DeleteMapping("/{id}")
     @ResponseBody
     public User deleteOneUser(@PathVariable Long id) {
