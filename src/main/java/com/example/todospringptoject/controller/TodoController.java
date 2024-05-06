@@ -57,7 +57,7 @@ public class TodoController {
 //        //return todoService.getAllTodosProjection(pageable, completed); // запрос с пагинацией, спецификацией, projections
 //    }
 
-//    // запрос с пагинацией, спецификацией, projections
+    // запрос с пагинацией, спецификацией, projections
 //    @GetMapping("/search")
 //    public Page<TodoProjection> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
 //                                  @RequestParam(required = false) Boolean completed

@@ -4,6 +4,7 @@ import com.example.todospringptoject.model.dto.TodoProjection;
 import com.example.todospringptoject.model.entity.TodoEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -16,7 +17,7 @@ public interface TodoRepo extends CrudRepository<TodoEntity, Long>, JpaSpecifica
     Page<TodoEntity> findAll(Pageable pageable);
 
     //projections
-    Page<TodoProjection> findAllProjectedBy(Pageable pageable);
+    Page<TodoProjection> findAllProjectedBy(Specification<TodoEntity> spec, Pageable pageable);
 
     //native запрос
     @Query(value = "SELECT * FROM todo WHERE completed = true", nativeQuery = true)
