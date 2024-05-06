@@ -112,11 +112,9 @@ public class UserService {
     }
 
     public void saveRandomUsers() {
-//        List<UserEntity> users = generateRandomUsers(10000);
-//        for (UserEntity user : users) {
-//            userRepo.save(user);
-//        }
-//        log.info("Сохранено {} случайных пользователей", users.size());
+        List<UserEntity> users = generateRandomUsers(10000);
+        userRepo.saveAll(users);
+        log.info("Сохранено {} случайных пользователей", users.size());
     }
 
     private List<UserEntity> generateRandomUsers(int count) {

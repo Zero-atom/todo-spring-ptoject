@@ -15,7 +15,8 @@ import java.util.List;
 public class UserEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "table_generator")
+    @TableGenerator(name = "table_generator", table = "sequence_table", pkColumnName = "seq_name", valueColumnName = "seq_value", pkColumnValue = "user_sequence")
     private Long id;
     private String username;
     private String password;
