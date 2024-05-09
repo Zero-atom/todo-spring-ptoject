@@ -13,11 +13,9 @@ import java.util.List;
 
 public interface TodoRepo extends CrudRepository<TodoEntity, Long>, JpaSpecificationExecutor<TodoEntity> {
 
-    //пагинация - разделение результата (большого объема данных) на страницы  (части)
-    Page<TodoEntity> findAll(Pageable pageable);
+    //Page<TodoEntity> findAll(Pageable pageable);
 
-    //projections
-    Page<TodoProjection> findAllProjectedBy(Specification<TodoEntity> spec, Pageable pageable);
+    Page<TodoProjection> findAll(Pageable pageable);
 
     //native запрос
     @Query(value = "SELECT * FROM todo WHERE completed = true", nativeQuery = true)

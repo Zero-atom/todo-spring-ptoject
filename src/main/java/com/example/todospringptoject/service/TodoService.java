@@ -66,20 +66,20 @@ public class TodoService {
     }
 
     //пагинация
-    public Page<Todo> getAllTodos(Pageable pageable) {
-        log.info("Метод getAllTodos вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}",
-                pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort());
-
-        Page<TodoEntity> todoEntities = todoRepo.findAll(pageable);
-        Page<Todo> todos = todoEntities.map(todoMapper::todoEntityToTodo); // Преобразование сущностей в DTO
-
-        if (!todos.isEmpty()) {
-            log.info("Успешно найдено {} задач", todos.getTotalElements());
-            return todos;
-        } else {
-            throw new TodoNotFoundException("Задачи не найдены");
-        }
-    }
+//    public Page<Todo> getAllTodos(Pageable pageable) {
+//        log.info("Метод getAllTodos вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}",
+//                pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort());
+//
+//        Page<TodoEntity> todoEntities = todoRepo.findAll(pageable);
+//        Page<Todo> todos = todoEntities.map(todoMapper::todoEntityToTodo); // Преобразование сущностей в DTO
+//
+//        if (!todos.isEmpty()) {
+//            log.info("Успешно найдено {} задач", todos.getTotalElements());
+//            return todos;
+//        } else {
+//            throw new TodoNotFoundException("Задачи не найдены");
+//        }
+//    }
 
     //пагинация и спецификация
     public Page<Todo> getAllTodosWithPaginationAndFilter(Pageable pageable, boolean completed) {
@@ -98,16 +98,14 @@ public class TodoService {
         }
     }
 
-    //пагинация, projections, спецификацией
+    //projections
     public Page<TodoProjection> getAllTodosProjection(Pageable pageable, boolean completed) {
         log.info("Метод getAllTodosProjection вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}, Фильтр: {}",
                 pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort(), completed);
 
-        Specification<TodoEntity> spec = todoSpecification.byCompleted(completed);
+        //Specification<TodoProjection> spec = todoSpecification.byCompletedProjection(completed);
 
-        Page<TodoEntity> todoEntities = todoRepo.findAll(spec, pageable);
-
-        Page<TodoProjection> todosProjections = todoEntities.map(todoMapper::todoEntityToTodoProjection);
+        Page<TodoProjection> todosProjections = todoRepo.findAll(pageable);
 
         if (!todosProjections.isEmpty()) {
             log.info("Успешно найдено {} задач", todosProjections.getTotalElements());
@@ -115,6 +113,7 @@ public class TodoService {
         } else {
             throw new TodoNotFoundException("Задачи не найдены");
         }
+
     }
 
     //native запрос и jpql запрос

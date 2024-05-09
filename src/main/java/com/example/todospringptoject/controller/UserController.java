@@ -25,7 +25,7 @@ public class UserController { // alt + enter - создать тест
     @GetMapping("/{userId}")
     @ResponseBody
     public User getOneUser(@PathVariable Long userId) {
-        userService.saveRandomUsers();
+        //userService.saveRandomUsers();
         return userService.getOne(userId);
     }
 

@@ -1,8 +1,6 @@
 package com.example.todospringptoject.mapper;
 
 import com.example.todospringptoject.model.dto.Todo;
-import com.example.todospringptoject.model.dto.TodoProjection;
-import com.example.todospringptoject.model.dto.TodoProjectionImpl;
 import com.example.todospringptoject.model.entity.TodoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -18,12 +16,6 @@ public interface TodoMapper {
     @Mapping(target = "completed", source = "entity.completed")
     @Mapping(target = "description", source = "entity.description")
     Todo todoEntityToTodo(TodoEntity entity);
-
-    //projections
-    @Mapping(target = "title", source = "entity.title")
-    @Mapping(target = "completed", source = "entity.completed")
-    TodoProjectionImpl todoEntityToTodoProjection(TodoEntity entity); // используем TodoProjectionImpl
-
 
     List<Todo> todoEntityListToTodoList(List<TodoEntity> entities);
 }

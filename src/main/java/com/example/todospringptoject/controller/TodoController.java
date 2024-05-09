@@ -58,17 +58,17 @@ public class TodoController {
 //    }
 
     // запрос с пагинацией, спецификацией, projections
-//    @GetMapping("/search")
-//    public Page<TodoProjection> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
-//                                  @RequestParam(required = false) Boolean completed
-//    ) {
-//        return todoService.getAllTodosProjection(pageable, completed); // запрос с пагинацией, спецификацией, projections
-//    }
+    @GetMapping("/search")
+    public Page<TodoProjection> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable,
+                                  @RequestParam(required = false) Boolean completed
+    ) {
+        return todoService.getAllTodosProjection(pageable, completed); // запрос с пагинацией, спецификацией, projections
+    }
 
     //native запрос
-    @GetMapping()
-    public Page<Todo> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
-        return todoService.findCompletedTodosNative(pageable);
-    }
+//    @GetMapping()
+//    public Page<Todo> getAllTodos(@PageableDefault(sort = {"id"}, direction = Sort.Direction.DESC) Pageable pageable) {
+//        return todoService.findCompletedTodosNative(pageable);
+//    }
 
 }
