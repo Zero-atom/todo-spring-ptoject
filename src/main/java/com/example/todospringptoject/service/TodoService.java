@@ -4,7 +4,7 @@ import com.example.todospringptoject.exception.TodoNotFoundException;
 import com.example.todospringptoject.exception.UserNotFoundException;
 import com.example.todospringptoject.mapper.TodoMapper;
 import com.example.todospringptoject.model.dto.Todo;
-import com.example.todospringptoject.model.dto.TodoProjection;
+import com.example.todospringptoject.model.projection.TodoProjection;
 import com.example.todospringptoject.model.entity.TodoEntity;
 import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.repository.TodoRepo;
@@ -32,6 +32,7 @@ public class TodoService {
     private TodoMapper todoMapper;
 
     private final TodoSpecification todoSpecification;
+
 
     public Todo createTodo(TodoEntity todo, Long userId)  {
         log.info("Метод createTodo вызван с параметрами: todo={}, userId={}", todo, userId);
@@ -103,9 +104,9 @@ public class TodoService {
         log.info("Метод getAllTodosProjection вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}, Фильтр: {}",
                 pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort(), completed);
 
-        //Specification<TodoProjection> spec = todoSpecification.byCompletedProjection(completed);
+        Specification<TodoProjection> spec = todoSpecification.byCompletedProjection(completed);
 
-        Page<TodoProjection> todosProjections = todoRepo.findAll(pageable);
+        Page<TodoProjection> todosProjections = todoRepo.getTodoEntityBy(pageable);
 
         if (!todosProjections.isEmpty()) {
             log.info("Успешно найдено {} задач", todosProjections.getTotalElements());

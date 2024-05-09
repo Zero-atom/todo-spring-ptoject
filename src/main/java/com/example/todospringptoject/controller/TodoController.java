@@ -1,7 +1,7 @@
 package com.example.todospringptoject.controller;
 
 import com.example.todospringptoject.model.dto.Todo;
-import com.example.todospringptoject.model.dto.TodoProjection;
+import com.example.todospringptoject.model.projection.TodoProjection;
 import com.example.todospringptoject.model.entity.TodoEntity;
 import com.example.todospringptoject.service.TodoService;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
 
 @RestController
 @RequestMapping("/todos")
