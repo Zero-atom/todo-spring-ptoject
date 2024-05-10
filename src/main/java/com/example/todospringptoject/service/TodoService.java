@@ -10,15 +10,18 @@ import com.example.todospringptoject.model.entity.UserEntity;
 import com.example.todospringptoject.repository.TodoRepo;
 import com.example.todospringptoject.repository.UserRepo;
 import com.example.todospringptoject.specification.TodoSpecification;
+
 import lombok.AllArgsConstructor;
 
-import org.springframework.data.jpa.domain.Specification;//убрать
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+//import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -33,7 +36,7 @@ public class TodoService {
 
     private final TodoSpecification todoSpecification;
 
-
+    @Transactional
     public Todo createTodo(TodoEntity todo, Long userId)  {
         log.info("Метод createTodo вызван с параметрами: todo={}, userId={}", todo, userId);
 
@@ -50,6 +53,7 @@ public class TodoService {
         }
     }
 
+    @Transactional
     public Todo completeTodo( Long todoId)  {
         log.info("Метод completeTodo вызван с параметром: todoId={}", todoId);
         Optional<TodoEntity> optionalTodo = todoRepo.findById(todoId);
@@ -100,6 +104,7 @@ public class TodoService {
     }
 
     //projections
+    @Transactional
     public Page<TodoProjection> getAllTodosProjection(Pageable pageable, boolean completed) {
         log.info("Метод getAllTodosProjection вызван с параметрами пагинации: Размер страницы: {}, Номер страницы: {}, Сортировка: {}, Фильтр: {}",
                 pageable.getPageSize(), pageable.getPageNumber(), pageable.getSort(), completed);

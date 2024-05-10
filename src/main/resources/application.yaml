@@ -21,10 +21,9 @@ spring:
 logging:
   level:
     org:
-      hibernate:
-        engine:
-          internal:
-            StatisticalLoggingSessionEventListener: INFO
+      hibernate.engine.internal.StatisticalLoggingSessionEventListener: INFO
+      springframework.transaction: TRACE
+      springframework.transaction.support: TRACE
 
 
 #  spring.application.name=todospringptoject

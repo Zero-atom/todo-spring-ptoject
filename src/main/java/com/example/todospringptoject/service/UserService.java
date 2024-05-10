@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class UserService {
     private UserRepo userRepo;//внедрение репо
     private UserMapper userMapper; // Внедряем маппер
 
+    @Transactional
     public User create(UserEntity user){
 
         if (userRepo.findByUsername(user.getUsername()) == null) {
@@ -44,6 +46,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public User getOne (Long id)  {
         log.info("Метод getOne вызван с параметром: id={}", id);
         Optional<UserEntity> optionalUser = userRepo.findById(id);
@@ -56,6 +59,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public List<User> getAll () {
         Iterable<UserEntity> userEntities = userRepo.findAll();
 
@@ -76,6 +80,7 @@ public class UserService {
     }
 
     //спецификация
+    @Transactional
     public List<User> getAll (String usernamePrefix, String titlePrefix) {
         // Создаем спецификацию для фильтрации пользователей
         Specification<UserEntity> spec = UserSpecification.usersWithTodosStartingWith(usernamePrefix, titlePrefix);
@@ -97,6 +102,7 @@ public class UserService {
         }
     }
 
+    @Transactional
     public User delete(Long id){
         log.info("Метод delete вызван с параметром: id={}", id);
         Optional<UserEntity> optionalUser = userRepo.findById(id);
@@ -111,6 +117,7 @@ public class UserService {
 
     }
 
+    @Transactional
     public void saveRandomUsers() {
         List<UserEntity> users = generateRandomUsers(10000);
         userRepo.saveAll(users);
