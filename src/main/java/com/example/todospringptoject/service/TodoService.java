@@ -41,33 +41,35 @@ public class TodoService {
         log.info("Метод createTodo вызван с параметрами: todo={}, userId={}", todo, userId);
 
         Optional<UserEntity> optionalUser = userRepo.findById(userId);
-        if (optionalUser.isPresent()) {
-            todo.setUser(optionalUser.get());
 
+        return optionalUser.map(user -> {
+            todo.setUser(user);
             Todo createdTodo = todoMapper.todoEntityToTodo(todoRepo.save(todo));
             log.info("todo успешно создано: {}", createdTodo);
-
             return createdTodo;
-        } else {
-            throw new UserNotFoundException("Пользователь не найден");
-        }
+        }).orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
+
+//        optionalUser.ifPresent(user -> {
+//            todo.setUser(user);
+//
+//            Todo createdTodo = todoMapper.todoEntityToTodo(todoRepo.save(todo));
+//            log.info("todo успешно создано: {}", createdTodo);
+//
+//            return createdTodo;
+//        }).orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
     }
 
     @Transactional
     public Todo completeTodo( Long todoId)  {
         log.info("Метод completeTodo вызван с параметром: todoId={}", todoId);
         Optional<TodoEntity> optionalTodo = todoRepo.findById(todoId);
-        if (optionalTodo.isPresent()) {
-            TodoEntity todo = optionalTodo.get();
-            todo.setCompleted(!todo.getCompleted());
 
+        return optionalTodo.map(todo -> {
+            todo.setCompleted(!todo.getCompleted());
             Todo completedTodo = todoMapper.todoEntityToTodo(todoRepo.save(todo));
             log.info("todo изменило статус на: {}", !todo.getCompleted());
-
             return completedTodo;
-        } else {
-            throw new TodoNotFoundException("Задача не найдена");
-        }
+        }).orElseThrow(() -> new TodoNotFoundException("Задача не найдена"));
     }
 
     //пагинация

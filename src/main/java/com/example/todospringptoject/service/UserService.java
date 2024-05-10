@@ -49,14 +49,13 @@ public class UserService {
     @Transactional
     public User getOne (Long id)  {
         log.info("Метод getOne вызван с параметром: id={}", id);
+
         Optional<UserEntity> optionalUser = userRepo.findById(id);
-        if (optionalUser.isPresent()) {
-            UserEntity user = optionalUser.get();
+
+        return optionalUser.map(user -> {
             log.info("Найден пользователь с id={}", id);
             return userMapper.userEntityToUser(user);
-        } else {
-            throw new UserNotFoundException("Пользователь не найден");
-        }
+        }).orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
     }
 
     @Transactional
@@ -105,16 +104,14 @@ public class UserService {
     @Transactional
     public User delete(Long id){
         log.info("Метод delete вызван с параметром: id={}", id);
+
         Optional<UserEntity> optionalUser = userRepo.findById(id);
-        if (optionalUser.isPresent()) {
-            UserEntity user = optionalUser.get();
+
+        return optionalUser.map(user -> {
             userRepo.deleteById(id);
             log.info("Пользователь с id={} удален", id);
             return userMapper.userEntityToUser(user);
-        } else {
-            throw new UserNotFoundException("Пользователь не найден");
-        }
-
+        }).orElseThrow(() -> new UserNotFoundException("Пользователь не найден"));
     }
 
     @Transactional
