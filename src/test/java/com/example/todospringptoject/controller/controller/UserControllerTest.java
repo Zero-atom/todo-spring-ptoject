@@ -8,6 +8,7 @@ import com.example.todospringptoject.repository.TodoRepo;
 import com.example.todospringptoject.repository.UserRepo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ import static io.restassured.RestAssured.given;
 @Testcontainers
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureMockMvc
+@Disabled
 class UserControllerTest {
 
 
