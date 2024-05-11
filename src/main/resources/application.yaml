@@ -8,9 +8,9 @@ spring:
   application:
     name: todospringptoject
   datasource:
-    url: jdbc:mysql://localhost:3306/todo_spring?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
-    username: root
-    password: root
+    url: ${MYSQL_URL:jdbc:mysql://localhost:3306/todo_spring?useUnicode=true&useSSL=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC}
+    username: ${MYSQL_ROOT_USERNAME:root}
+    password: ${MYSQL_ROOT_PASSWORD:root }
 
   jpa:
     properties:
@@ -24,7 +24,6 @@ logging:
       hibernate.engine.internal.StatisticalLoggingSessionEventListener: INFO
       springframework.transaction: TRACE
       springframework.transaction.support: TRACE
-
 
 #  spring.application.name=todospringptoject
 #  spring.jpa.hibernate.ddl-auto=update

@@ -25,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+
+
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -97,7 +100,7 @@ public class TodoService {
         Page<TodoEntity> todoEntities = todoRepo.findAll(spec, pageable);
         Page<Todo> todos = todoEntities.map(todoMapper::todoEntityToTodo);
 
-        if (!todos.isEmpty()) {
+        if (isNotEmpty(todos.getContent())) { //!todos.isEmpty()
             log.info("Успешно найдено {} задач", todos.getTotalElements());
             return todos;
         } else {
@@ -115,13 +118,12 @@ public class TodoService {
 
         Page<TodoProjection> todosProjections = todoRepo.getTodoEntityBy(pageable);
 
-        if (!todosProjections.isEmpty()) {
+        if (isNotEmpty(todosProjections.getContent())) {
             log.info("Успешно найдено {} задач", todosProjections.getTotalElements());
             return todosProjections;
         } else {
             throw new TodoNotFoundException("Задачи не найдены");
         }
-
     }
 
     //native запрос и jpql запрос
@@ -134,7 +136,7 @@ public class TodoService {
 
         Page<Todo> todos = todoEntities.map(todoMapper::todoEntityToTodo);
 
-        if (!todos.isEmpty()) {
+        if (isNotEmpty(todos.getContent())) {
             log.info("Успешно найдено {} задач", todos.getTotalElements());
             return todos;
         } else {

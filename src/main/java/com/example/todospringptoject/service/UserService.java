@@ -24,6 +24,8 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.apache.commons.collections4.CollectionUtils.isNotEmpty;
+
 
 //сервис работает с конкретной бизнес логикой - второй слой абстракции
 @Service// что бы потом использовать Autowired
@@ -69,7 +71,7 @@ public class UserService {
         }
 
         // Если список пользователей пустой, выбрасываем исключение
-        if (!users.isEmpty()) {
+        if (isNotEmpty(users)) {
             log.info("Успешно найдено {} пользователей", users.size());
             return users;
         } else {
@@ -93,7 +95,7 @@ public class UserService {
         }
 
         // Если список пользователей пустой, выбрасываем исключение
-        if (!users.isEmpty()) {
+        if (isNotEmpty(users)) {
             log.info("Успешно найдено {} пользователей", users.size());
             return users;
         } else {
